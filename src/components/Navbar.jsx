@@ -1,40 +1,40 @@
-import { Link } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+import { NavLink } from 'react-router-dom';
 
-// eslint-disable-next-line react/prop-types
 const Navbar = ({ isAuthenticated }) => {
   return (
-    <nav className="bg-primary p-4 shadow-md">
+    <nav className="bg-primary p-5 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white text-2xl font-bold">
-          <Link to="/">AuditifyX</Link>
+          <NavLink to="/">AuditifyX</NavLink>
         </div>
         <div className="space-x-4">
           {isAuthenticated ? (
             <>
-              <Link to="/dashboard" className="text-white hover:bg-accent px-3 py-2 rounded">
+              <NavLink to="/dashboard" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 Dashboard
-              </Link>
-              <Link to="/profile" className="text-white hover:bg-accent px-3 py-2 rounded">
+              </NavLink>
+              <NavLink to="/profile" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 Profile
-              </Link>
-              <Link to="/logout" className="text-white hover:bg-accent px-3 py-2 rounded">
+              </NavLink>
+              <NavLink to="/logout" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 Log Out
-              </Link>
+              </NavLink>
             </>
           ) : (
             <>
-              <Link to="/contact" className="text-white hover:bg-accent px-3 py-2 rounded">
+              <NavLink to="/contact" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 Contact Us
-              </Link>
-              <Link to="/about" className="text-white hover:bg-accent px-3 py-2 rounded">
+              </NavLink>
+              <NavLink to="/about" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 About Us
-              </Link>
-              <Link to="/signup" className="text-white hover:bg-accent px-3 py-2 rounded">
+              </NavLink>
+              <NavLink to="/signup" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 Sign Up
-              </Link>
-              <Link to="/login" className="text-white hover:bg-accent px-3 py-2 rounded">
+              </NavLink>
+              <NavLink to="/login" className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}>
                 Log In
-              </Link>
+              </NavLink>
             </>
           )}
         </div>

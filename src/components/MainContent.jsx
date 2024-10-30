@@ -1,3 +1,6 @@
+import upload from '../assets/upload.png'
+import secure from '../assets/secure.jpg'
+import collab from '../assets/collab.jpg'
 import { motion } from 'framer-motion';
 
 const MainContent = () => {
@@ -8,7 +11,7 @@ const MainContent = () => {
   };
 
   return (
-    <main className="px-6 py-12 bg-gray-50">
+    <main className="px-6 py-12 bg-secondary">
       {/* Features Section */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold text-center mb-6">Key Features</h2>
@@ -21,7 +24,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5 }}
           >
-            <img src="../assets/upload.png" alt="Easy Document Upload" className="mb-4 rounded-md" />
+            <img src={upload} alt="Easy Document Upload" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Easy Document Upload</h3>
             <p>
               Seamlessly upload all your auditing documents with our user-friendly interface.
@@ -35,7 +38,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <img src="../assets/collab.jpg" alt="Real-time Collaboration" className="mb-4 rounded-md" />
+            <img src={collab} alt="Real-time Collaboration" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Real-time Collaboration</h3>
             <p>
               Collaborate with auditors in real-time, ensuring a smooth auditing process.
@@ -49,7 +52,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <img src="../assets/secure.jpg" alt="Secure Access" className="mb-4 rounded-md" />
+            <img src={secure} alt="Secure Access" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Secure Access</h3>
             <p>
               Your documents are secure and accessible only to authorized personnel, ensuring confidentiality.
@@ -70,7 +73,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5 }}
           >
-            <img src="/path/to/image4.jpg" alt="Streamlined Processes" className="mb-4 rounded-md" />
+            <img src="/path/to/image4.jpg" alt="Streamlined Processes" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Streamlined Processes</h3>
             <p>
               Our platform simplifies the auditing process, reducing the time and effort needed to prepare and manage documents.
@@ -84,7 +87,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <img src="/path/to/image5.jpg" alt="Improved Compliance" className="mb-4 rounded-md" />
+            <img src="/path/to/image5.jpg" alt="Improved Compliance" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Improved Compliance</h3>
             <p>
               Stay compliant with auditing standards and regulations by using a platform designed for efficiency and accuracy.
@@ -98,7 +101,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <img src="/path/to/image6.jpg" alt="Enhanced Transparency" className="mb-4 rounded-md" />
+            <img src="/path/to/image6.jpg" alt="Enhanced Transparency" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Enhanced Transparency</h3>
             <p>
               Our system promotes transparency in the auditing process, ensuring that all stakeholders have access to necessary information.
@@ -112,7 +115,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <img src="/path/to/image7.jpg" alt="Cost-Effective Solution" className="mb-4 rounded-md" />
+            <img src="/path/to/image7.jpg" alt="Cost-Effective Solution" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Cost-Effective Solution</h3>
             <p>
               Save money on auditing costs by leveraging our platform’s efficient document management and collaboration features.
