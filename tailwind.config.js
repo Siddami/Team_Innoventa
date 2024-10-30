@@ -4,7 +4,23 @@ export default {
     './src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#1D4E89',       // Deep Blue for primary elements
+        secondary: '#F5F5F5',     // Soft Gray for background
+        accent: '#56A3D9',        // Light Blue for buttons, highlights
+        textColor: '#333333',     // Dark Charcoal for text
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // or ['Roboto', 'sans-serif']
+      },
+      backgroundImage: {
+        'hero-pattern': "url('./src/assets/hero.jpg')", // Adjust the path to your image
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      },
+    },
   },
   plugins: [],
 }
