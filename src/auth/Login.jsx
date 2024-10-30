@@ -1,11 +1,16 @@
-import axios from 'axios';
+// src/Login.js
 import { useState } from 'react';
+import { auth, db } from '../firebase'; // Adjust the path if necessary
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom'; // Assuming you’re using React Router
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,15 +18,25 @@ const Login = () => {
     setMessage('');
 
     try {
-      // Sending a POST request to the reqres.in API with email and password
-      const response = await axios.post('https://reqres.in/api/login', {
-        email,
-        password,
-      });
-      setMessage('Login successful!');
-      console.log(response.data); // Token received in response
+      // Authenticate the user with Firebase Auth
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Check if user data exists in Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        // User data exists in Firestore
+        setMessage('Login successful!');
+        navigate('/dashboard'); // Navigate to dashboard (adjust path if necessary)
+      } else {
+        // User data does not exist
+        setMessage('Account not found. Please create an account.');
+      }
     } catch (error) {
-      setMessage('Login failed. Please check your credentials.', error);
+      setMessage('Login failed. Please check your credentials.');
+      console.error('Error during login:', error.message);
     } finally {
       setLoading(false);
     }

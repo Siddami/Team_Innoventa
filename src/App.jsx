@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import Login from './auth/Login';
 import { ToastContainer } from 'react-toastify';
 import Signup from './auth/SignUp';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
     </>
