@@ -17,6 +17,9 @@ export default {
       backgroundImage: {
         'hero-pattern': "url('./src/assets/hero.jpg')", // Adjust the path to your image
       },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      },
     },
   },
   plugins: [],
