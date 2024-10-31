@@ -15,7 +15,7 @@ export default {
         sans: ['Inter', 'sans-serif'], // or ['Roboto', 'sans-serif']
       },
       backgroundImage: {
-        'hero-pattern': "url('./src/assets/hero.jpg')", // Adjust the path to your image
+        'hero-pattern': "url('./src/assets/hero.jpg')", 
       },
       animation: {
         'spin-slow': 'spin 3s linear infinite',
