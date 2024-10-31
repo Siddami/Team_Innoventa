@@ -4,7 +4,6 @@ import { auth, db } from '../firebase'; // Adjust the path if necessary
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom'; // Assuming you’re using React Router
-import Loader from '../components/Loader';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -90,7 +89,7 @@ const Login = () => {
             disabled={loading}
             className="w-full px-4 py-2 font-semibold text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none"
           >
-            {loading ? <Loader /> : 'Login'}
+            {loading ? 'Loading...' : 'Login'}
           </button>
           <p className='text-textColor hover:cursor-pointer' onClick={handleBackhome}>Back to home</p>
         </form>
