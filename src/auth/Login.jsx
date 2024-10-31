@@ -4,6 +4,7 @@ import { auth, db } from '../firebase'; // Adjust the path if necessary
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom'; // Assuming you’re using React Router
+import Loader from '../components/Loader';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -28,18 +29,28 @@ const Login = () => {
 
       if (userDocSnap.exists()) {
         // User data exists in Firestore
-        setMessage('Login successful!');
         navigate('/dashboard'); // Navigate to dashboard (adjust path if necessary)
       } else {
         // User data does not exist
         setMessage('Account not found. Please create an account.');
       }
     } catch (error) {
-      setMessage('Login failed. Please check your credentials.');
+      // Handle specific Firebase Auth errors for better feedback
+      if (error.code === 'auth/wrong-password') {
+        setMessage('Incorrect password. Please try again.');
+      } else if (error.code === 'auth/user-not-found') {
+        setMessage('No account found with this email. Please create an account.');
+      } else {
+        setMessage('Login failed. Please check your credentials.');
+      }
       console.error('Error during login:', error.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBackhome = async () => {
+    navigate('/'); // Just navigate back without logging out
   };
 
   return (
@@ -77,10 +88,11 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none"
+            className="w-full px-4 py-2 font-semibold text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? <Loader /> : 'Login'}
           </button>
+          <p className='text-textColor hover:cursor-pointer' onClick={handleBackhome}>Back to home</p>
         </form>
       </div>
     </div>

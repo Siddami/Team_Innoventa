@@ -4,6 +4,8 @@ import Login from './auth/Login';
 import { ToastContainer } from 'react-toastify';
 import Signup from './auth/SignUp';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+
 
 const App = () => {
   return (
@@ -25,6 +27,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile/:userId" element={<Profile />} />
         </Routes>
       </Router>
     </>
