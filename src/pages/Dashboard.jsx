@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { db, auth } from '../firebase'; // Ensure you have Firebase setup
+import { db, auth } from '../firebase'; 
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import Loader from '../components/Loader'
-import Sidebar from '../components/Sidebar'; // Import the Sidebar component
-import RenderContent from '../components/RenderContent'; // Import the RenderContent component
+import { useNavigate } from 'react-router-dom'; 
+import Loader from '../components/Loader';
+import Sidebar from '../components/Sidebar'; 
+import RenderContent from '../components/RenderContent'; 
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
   const [activeSection, setActiveSection] = useState('recentActivity');
+  const navigate = useNavigate(); 
 
   // Fetch current user's ID and data
   useEffect(() => {
@@ -20,7 +22,7 @@ const Dashboard = () => {
       if (user) {
         setUserId(user.uid); // Set user ID from auth user
       } else {
-        // Handle user not logged in (redirect or show message)
+        navigate('/login'); // Redirect to login if not authenticated
       }
     });
 
@@ -73,6 +75,15 @@ const Dashboard = () => {
     fetchUserData();
   }, [userId]);
 
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate('/'); 
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -80,16 +91,28 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container flex">
       {/* Sidebar */}
-      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <Sidebar 
+        activeSection={activeSection} 
+        setActiveSection={setActiveSection} 
+        userType={userData?.userType} // Pass userType to Sidebar
+      />
 
       {/* Main Content */}
       <main className="main-content w-3/4 p-6">
         {/* Top Navigation */}
         <div className="top-nav flex justify-between mb-4">
-          <h1 className="text-2xl font-semibold">Welcome, {userData?.name || 'User'}</h1>
-          <div className="user-details">
+          <h1 className="text-2xl font-semibold"> {userData?.name || 'User'}</h1>
+          <div className="user-details flex items-center gap-2">
             <span className="text-gray-600">{userData?.email || 'Email'}</span>
-            {/* Additional user details can go here */}
+            <button onClick={handleLogout} className="ml-4 bg-red-500 text-white p-2 rounded hover:bg-red-600">
+              Log Out
+            </button>
+            <button
+              onClick={() => navigate('/')} // Navigate to the home page using useNavigate
+              className="bg-primary text-white p-2 rounded hover:bg-blue-600"
+            >
+              Back to Home
+            </button>
           </div>
         </div>
 
