@@ -1,10 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase"; 
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import MainContent from "../components/MainContent";
 import Footer from "../components/Footer";
-import Loader from "../components/Loader"; // Ensure this is correctly imported
+import Loader from "../components/Loader"; 
 
 export const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,13 +14,17 @@ export const Home = () => {
   useEffect(() => {
     console.log("Loading started...");
 
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      console.log("Loading finished.");
-    }, 1000); // Adjust time as needed
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true); // User is signed in
+      } else {
+        setIsAuthenticated(false); // No user is signed in
+      }
+      setIsLoading(false); // Finished loading once we know the auth state
+    });
 
     return () => {
-      clearTimeout(timer); // Clear timer on unmount
+      unsubscribe(); // Cleanup subscription on unmount
     };
   }, []); // Empty dependency array ensures it runs only once
 
