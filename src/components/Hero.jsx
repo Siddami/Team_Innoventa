@@ -3,18 +3,18 @@ import HeroImage from '../assets/hero.jpg';
 
 const Hero = () => {
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center h-screen p-8 bg-gray-900 text-white">
+    <section className="flex flex-col md:flex-row items-center justify-center h-screen w-full p-0 sm:p-4 bg-gray-900 text-white">
       {/* Left Side: Image */}
-      <div className="flex-1 flex justify-center mb-8 md:mb-0">
+      <div className="flex-1 flex justify-center mb-6 md:mb-0 mt-2">
         <img
           src={HeroImage}
           alt="Audit experience illustration"
-          className="max-w-full md:max-w-xl rounded-lg transform transition duration-500 hover:scale-105"
+          className="w-[70%] sm:w-2/4 mt-2 md:w-3/4 lg:w-full xl:max-w-lg rounded-lg transform transition duration-500 hover:scale-105"
         />
       </div>
 
       {/* Right Side: Text Content */}
-      <div className="flex-1 flex flex-col justify-center items-start text-left p-8 bg-transparent bg-opacity-60 rounded-lg">
+      <div className="flex-1 flex flex-col justify-center items-start text-left px-4 sm:px-8 lg:px-12">
         <TypeAnimation
           sequence={[
             "Simplifying Your Audit Experience", // Initial text
@@ -23,16 +23,16 @@ const Hero = () => {
             2000, // Display for another 2 seconds
           ]}
           wrapper="h1"
-          className="text-5xl md:text-6xl font-bold mb-4 leading-tight"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
           repeat={Infinity} // Loop indefinitely
         />
 
-        <p className="text-xl md:text-2xl mb-8 mt-4">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 mt-2">
           Effortlessly upload and manage your documents with our user-friendly platform.
         </p>
         <a
           href="/signup"
-          className="bg-accent hover:bg-accent-dark text-white font-semibold py-4 px-8 rounded transition duration-200 text-lg"
+          className="bg-primary hover:bg-accent hover:scale-95 text-white font-semibold py-3 px-6 sm:py-4 sm:px-8 rounded transition duration-200 text-sm sm:text-base md:text-lg"
         >
           Get Started
         </a>
