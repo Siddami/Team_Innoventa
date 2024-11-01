@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import Signup from './auth/SignUp';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import About from './pages/About';
 
 
 const App = () => {
@@ -28,6 +29,8 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/about" element={<About />} />
+        
         </Routes>
       </Router>
     </>
