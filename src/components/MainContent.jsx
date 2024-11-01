@@ -1,8 +1,12 @@
 import upload from '../assets/upload.png'
 import secure from '../assets/secure.jpg'
 import collab from '../assets/collab.jpg'
+import analysis from '../assets/analysis.jpg'
+import audit  from  '../assets/audit.jpg'
+import files  from  '../assets/files.jpg'
+import account from '../assets/account.jpg'
 import { motion } from 'framer-motion';
-
+ 
 const MainContent = () => {
   // Animation variants for Framer Motion
   const containerVariants = {
@@ -73,7 +77,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5 }}
           >
-            <img src="/path/to/image4.jpg" alt="Streamlined Processes" className="mb-4 rounded-md w-full h-48 object-cover" />
+            <img src={analysis} alt="Streamlined Processes" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Streamlined Processes</h3>
             <p>
               Our platform simplifies the auditing process, reducing the time and effort needed to prepare and manage documents.
@@ -87,7 +91,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <img src="/path/to/image5.jpg" alt="Improved Compliance" className="mb-4 rounded-md w-full h-48 object-cover" />
+            <img src={files} alt="Improved Compliance" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Improved Compliance</h3>
             <p>
               Stay compliant with auditing standards and regulations by using a platform designed for efficiency and accuracy.
@@ -101,7 +105,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <img src="/path/to/image6.jpg" alt="Enhanced Transparency" className="mb-4 rounded-md w-full h-48 object-cover" />
+            <img src={account} alt="Enhanced Transparency" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Enhanced Transparency</h3>
             <p>
               Our system promotes transparency in the auditing process, ensuring that all stakeholders have access to necessary information.
@@ -115,7 +119,7 @@ const MainContent = () => {
             animate="visible"
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <img src="/path/to/image7.jpg" alt="Cost-Effective Solution" className="mb-4 rounded-md w-full h-48 object-cover" />
+            <img src={audit} alt="Cost-Effective Solution" className="mb-4 rounded-md w-full h-48 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Cost-Effective Solution</h3>
             <p>
               Save money on auditing costs by leveraging our platform’s efficient document management and collaboration features.
