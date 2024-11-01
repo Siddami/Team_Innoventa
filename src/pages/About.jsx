@@ -1,35 +1,70 @@
+import process from '../assets/sort.jpg';
+import mission from '../assets/mission.jpg';
+import service from '../assets/service.jpg';
+import team from '../assets/team.jpg';
+import { Link } from 'react-router-dom';
 
 const About = () => {
-    return ( 
-        <div className=" bg-red max-w-7xl mx-auto p-4 md:p-6 lg:p-8 flex flex-col bg-gray-300 ">
-
-            <div className="content bg-white p-8 rounded-2xl m-1 " >
-            <h1 class="text-3xl font-bold text-center mb-6  bg-red">About Us</h1>
-      <p class=" text-gray-700 text-lg text-center mb-8"> 
-        Welcome to <em className="text-blue-600">AUDITFYX</em>, your trusted partner in ensuring accuracy,realiability,and comliance. 
-        Our team of experienced auditors provides expert auditing services to help organizations like yours maintain transparency, mitigate risks, and achieve their goals.
-
-      </p> 
+    return (
+        <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 flex flex-col bg-primary">
+            
+            {/* Back Button */}
+            <div className="mb-6">
+                <Link to="/" className="flex items-center text-accent hover:text-accent-dark transition">
+                    <box-icon name="arrow-back" color="#fff" size="sm"></box-icon>
+                    <span className="ml-2 text-lg font-semibold text-white">Back to Home</span>
+                </Link>
             </div>
 
-        <div className="content  bg-white p-8 rounded-2xl m-1 ">
-        <h2 class="text-3xl font-bold mb-6 text-center" > <b>Our Mission</b></h2>
-      <p class="text-gray-700 text-lg text-center mb-8">
-        We aim to provide high-quality independent, and insightful auditing services that empower organizations to make data-driven decisions, enhance performance, and demonstrate accountability.
+            {/* Welcome Section */}
+            <div className="bg-white p-8 rounded-2xl shadow-md mb-6">
+                <h1 className="text-3xl font-bold text-center mb-4 text-accent">About AuditifyX</h1>
+                <p className="text-gray-700 text-lg text-center mb-6">
+                    Welcome to <em className="text-accent">AuditifyX</em>, where our mission is to streamline the auditing process and enhance compliance for organizations. 
+                    Through our platform, we connect organizations with skilled auditors to manage and review documents, ensuring accuracy, transparency, and accountability.
+                </p>
+                <div className="flex justify-center">
+                    <img src={process} alt="Audit Process" className="rounded-lg shadow-lg max-w-full h-auto" />
+                </div>
+            </div>
 
-      </p>
+            {/* Our Mission Section */}
+            <div className="bg-white p-8 rounded-2xl shadow-md mb-6">
+                <h2 className="text-2xl font-bold text-center mb-4 text-accent">Our Mission</h2>
+                <p className="text-gray-700 text-lg text-center mb-6">
+                    Our mission is to provide high-quality, reliable auditing solutions that help organizations make informed, data-driven decisions. 
+                    AUDITFYX empowers companies by creating a platform where compliance and transparency are prioritized, and organizations can focus on growth.
+                </p>
+                <div className="flex justify-center">
+                    <img src={mission} alt="Our Mission" className="rounded-lg shadow-lg max-w-full h-auto" />
+                </div>
+            </div>
 
+            {/* Our Services Section */}
+            <div className="bg-white p-8 rounded-2xl shadow-md mb-6">
+                <h2 className="text-2xl font-bold text-center mb-4 text-accent">Our Services</h2>
+                <p className="text-gray-700 text-lg text-center mb-6">
+                    AUDITFYX offers a comprehensive suite of auditing tools, from document uploads to in-depth review capabilities and threaded comments, 
+                    allowing for efficient and organized audits. Our platform is designed to simplify auditing and enhance communication between organizations and auditors.
+                </p>
+                <div className="flex justify-center">
+                    <img src={service} alt="Our Services" className="rounded-lg shadow-lg max-w-full h-auto" />
+                </div>
+            </div>
+
+            {/* Our Team Section */}
+            <div className="bg-white p-8 rounded-2xl shadow-md">
+                <h2 className="text-2xl font-bold text-center mb-4 text-accent">Meet Our Team</h2>
+                <p className="text-gray-700 text-lg text-center mb-6">
+                    Our team consists of experienced auditors and industry experts who are passionate about delivering exceptional auditing services. 
+                    Each team member brings a unique set of skills to ensure your organization remains compliant and risk-free.
+                </p>
+                <div className="flex justify-center">
+                    <img src={team} alt="Our Team" className="rounded-lg shadow-lg max-w-full h-auto" />
+                </div>
+            </div>
         </div>
+    );
+};
 
-      <div className="content  bg-white p-8 rounded-2xl m-1">
-      <h2 class="text-3xl font-bold mb-6 text-center">Our Team</h2>
-      <p class="text-gray-700 text-lg text-center mb-8">
-        Our team consists of experienced professionals dedicated to excellence,each with extensive experience in various industries and auditing disciplines
-      </p>
-      </div>
-    
-        </div>
-     );
-}
- 
 export default About;

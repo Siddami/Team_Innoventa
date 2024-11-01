@@ -6,6 +6,7 @@ import Signup from './auth/SignUp';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import About from './pages/About';
+import ContactUs from './pages/ContactUs';
 
 
 const App = () => {
@@ -30,7 +31,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/about" element={<About />} />
-        
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </Router>
     </>
