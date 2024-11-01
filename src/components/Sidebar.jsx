@@ -1,6 +1,6 @@
 const Sidebar = ({ activeSection, setActiveSection, userType }) => {
   return (
-    <aside className="w-1/4 bg-primary text-white h-screen p-4">
+    <aside className="w-80 bg-primary text-white h-screen p-4">
       <h2 className="text-2xl font-bold mb-4">AuditifyX</h2>
       <ul className="flex flex-col gap-5">
         <li className="mb-2">
@@ -12,7 +12,6 @@ const Sidebar = ({ activeSection, setActiveSection, userType }) => {
           </button>
         </li>
 
-        {/* Document List is available for both user types */}
         <li className="mb-2">
           <button
             className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'documentList' ? 'font-bold text-textColor bg-secondary' : ''}`}
@@ -22,7 +21,6 @@ const Sidebar = ({ activeSection, setActiveSection, userType }) => {
           </button>
         </li>
 
-        {/* Conditional rendering for Upload Document */}
         {userType === 'organization' && (
           <li className="mb-2">
             <button
@@ -34,7 +32,6 @@ const Sidebar = ({ activeSection, setActiveSection, userType }) => {
           </li>
         )}
 
-        {/* Access Document and Comment button is available to both user types */}
         <li className="mb-2">
           <button
             className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'comments' ? 'font-bold text-textColor bg-secondary' : ''}`}

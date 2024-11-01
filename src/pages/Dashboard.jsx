@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { db, auth } from '../firebase'; 
+import { db, auth } from '../firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
-import Sidebar from '../components/Sidebar'; 
-import RenderContent from '../components/RenderContent'; 
+import Sidebar from '../components/Sidebar';
+import RenderContent from '../components/RenderContent';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -14,51 +14,46 @@ const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
   const [activeSection, setActiveSection] = useState('recentActivity');
-  const navigate = useNavigate(); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const navigate = useNavigate();
 
-  // Fetch current user's ID and data
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserId(user.uid); // Set user ID from auth user
+        setUserId(user.uid);
       } else {
-        navigate('/login'); // Redirect to login if not authenticated
+        navigate('/login');
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
-  // Fetch user data, notifications, and recent activity
   useEffect(() => {
     const fetchUserData = async () => {
       if (userId) {
         try {
-          // Fetch user data
           const userDocRef = doc(db, 'users', userId);
           const userDocSnap = await getDoc(userDocRef);
 
           if (userDocSnap.exists()) {
             setUserData(userDocSnap.data());
 
-            // Fetch notifications
             const notificationsRef = collection(db, 'notifications');
             const notificationsSnapshot = await getDocs(notificationsRef);
             const notificationsList = notificationsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setNotifications(notificationsList);
 
-            // Fetch recent activity based on user type
-            const activityRef = collection(db, 'documents'); // Adjust as needed for your document structure
+            const activityRef = collection(db, 'documents');
             const activitySnapshot = await getDocs(activityRef);
             const activityList = activitySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
             if (userDocSnap.data().userType === 'auditor') {
-              // Filter for auditor specific activities
-              const assignedActivities = activityList.filter(doc => doc.assignedTo === userId); // Assuming 'assignedTo' is a field in your documents
+              const assignedActivities = activityList.filter(doc => doc.assignedTo === userId);
               setRecentActivity(assignedActivities);
             } else {
-              // Filter for organization specific activities
-              const organizationActivities = activityList.filter(doc => doc.uploadedBy === userId); // Assuming 'uploadedBy' is a field
+              const organizationActivities = activityList.filter(doc => doc.uploadedBy === userId);
               setRecentActivity(organizationActivities);
             }
           } else {
@@ -76,11 +71,25 @@ const Dashboard = () => {
   }, [userId]);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await auth.signOut();
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       console.error('Error logging out:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleSidebarOptionClick = (section) => {
+    setActiveSection(section);
+    if (window.innerWidth <= 1024) {
+      setIsSidebarOpen(false);
     }
   };
 
@@ -89,41 +98,75 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard-container flex">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
-      <Sidebar 
-        activeSection={activeSection} 
-        setActiveSection={setActiveSection} 
-        userType={userData?.userType} // Pass userType to Sidebar
-      />
+      <div
+        className={`fixed inset-y-0 left-0 z-20 transform transition-transform bg-white shadow-md ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:relative lg:translate-x-0 lg:w-64 xl:w-72`}
+      >
+        <Sidebar
+          activeSection={activeSection}
+          setActiveSection={handleSidebarOptionClick}
+          userType={userData?.userType}
+        />
+      </div>
 
       {/* Main Content */}
-      <main className="main-content w-3/4 p-6">
-        {/* Top Navigation */}
-        <div className="top-nav flex justify-between mb-4">
-          <h1 className="text-2xl font-semibold"> {userData?.name || 'User'}</h1>
-          <div className="user-details flex items-center gap-2">
-            <span className="text-gray-600">{userData?.email || 'Email'}</span>
-            <button onClick={handleLogout} className="ml-4 bg-red-500 text-white p-2 rounded hover:bg-red-600">
-              Log Out
+      <div className="flex-1 lg:ml-60 xl:ml-64 flex flex-col">
+        {/* Top Navigation Bar spanning full width */}
+        <div className="w-full flex justify-between items-center p-4 sm:p-6 md:p-8 ">
+          <button
+            onClick={toggleSidebar}
+            className="text-2xl lg:hidden focus:outline-none"
+            aria-expanded={isSidebarOpen}
+          >
+            {isSidebarOpen ? (
+              <i className="bx bx-chevron-left"></i>
+            ) : (
+              <i className="bx bx-menu"></i>
+            )}
+          </button>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-semibold flex-1 text-center lg:text-left">
+            {userData?.name || 'User'}
+          </h1>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => navigate('/')}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Home
             </button>
             <button
-              onClick={() => navigate('/')} // Navigate to the home page using useNavigate
-              className="bg-primary text-white p-2 rounded hover:bg-blue-600"
+              onClick={handleLogout}
+              className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ${
+                isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              disabled={isLoggingOut}
             >
-              Back to Home
+              {isLoggingOut ? 'Logging Out...' : 'Log Out'}
             </button>
           </div>
         </div>
 
-        {/* Content based on selected section */}
-        <RenderContent
-          activeSection={activeSection}
-          recentActivity={recentActivity}
-          notifications={notifications}
-          userType={userData?.userType} // Pass userType to RenderContent
-        />
-      </main>
+        {/* Content Section */}
+        <div className="p-4 sm:p-6 md:p-8 overflow-auto">
+          <RenderContent
+            activeSection={activeSection}
+            recentActivity={recentActivity}
+            notifications={notifications}
+            userType={userData?.userType}
+          />
+        </div>
+      </div>
+
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && window.innerWidth <= 1024 && (
+        <div
+          onClick={toggleSidebar}
+          className="fixed inset-0 bg-black opacity-50 z-10 lg:hidden"
+        ></div>
+      )}
     </div>
   );
 };
