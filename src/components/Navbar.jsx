@@ -62,6 +62,12 @@ const Navbar = ({ isAuthenticated }) => {
               >
                 Dashboard
               </NavLink>
+              <NavLink
+                to="/auditors"
+                className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}
+              >
+                Auditors
+              </NavLink>
               {userId && (
                 <NavLink
                   to={`/profile/${userId}`} 
@@ -90,6 +96,12 @@ const Navbar = ({ isAuthenticated }) => {
                 className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}
               >
                 About Us
+              </NavLink>
+              <NavLink
+                to="/auditors"
+                className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}
+              >
+                Auditors
               </NavLink>
               <NavLink
                 to="/signup"
@@ -119,6 +131,12 @@ const Navbar = ({ isAuthenticated }) => {
               >
                 Dashboard
               </NavLink>
+              <NavLink
+                to="/auditors"
+                className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}
+              >
+                Auditors
+              </NavLink>
               {userId && (
                 <NavLink
                   to={`/profile/${userId}`} 
@@ -147,6 +165,12 @@ const Navbar = ({ isAuthenticated }) => {
                 className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}
               >
                 About Us
+              </NavLink>
+              <NavLink
+                to="/auditors"
+                className={({ isActive }) => `text-white hover:bg-accent px-3 py-2 rounded ${isActive ? 'bg-accent' : ''}`}
+              >
+                Auditors
               </NavLink>
               <NavLink
                 to="/signup"

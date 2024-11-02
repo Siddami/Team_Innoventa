@@ -20,11 +20,16 @@ export default {
       animation: {
         'spin-slow': 'spin 3s linear infinite',
         'fadeIn': 'fadeIn 0.5s ease-in-out',
+        'slideDown': 'slideDown 0.6s ease-in-out',
       },
       keyframes: {
         fadeIn: { // Removed quotes to make it consistent
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
     }, // Added closing bracket for 'extend'

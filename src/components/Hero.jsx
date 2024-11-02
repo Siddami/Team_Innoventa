@@ -1,5 +1,6 @@
 import { TypeAnimation } from "react-type-animation";
 import HeroImage from '../assets/hero.jpg';
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -30,12 +31,7 @@ const Hero = () => {
         <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 mt-2">
           Effortlessly upload and manage your documents with our user-friendly platform.
         </p>
-        <a
-          href="/signup"
-          className="bg-primary hover:bg-accent hover:scale-95 text-white font-semibold py-3 px-6 sm:py-4 sm:px-8 rounded transition duration-200 text-sm sm:text-base md:text-lg"
-        >
-          Get Started
-        </a>
+        <Link to="/signup" className="bg-primary hover:bg-accent hover:scale-95 text-white font-semibold py-3 px-6 sm:py-4 sm:px-8 rounded transition duration-200 text-sm sm:text-base md:text-lg">Get Started</Link>
       </div>
     </section>
   );
