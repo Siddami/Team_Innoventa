@@ -1,16 +1,16 @@
 import { TypeAnimation } from "react-type-animation";
-import HeroImage from '../assets/hero.jpg';
+import HeroImage from '../assets/sort.jpg';
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <section className="flex flex-col md:flex-row items-center justify-center h-screen w-full p-0 sm:p-4 bg-gray-900 text-white">
       {/* Left Side: Image */}
-      <div className="flex-1 flex justify-center mb-6 md:mb-0 mt-2">
+      <div className="flex-1 flex justify-center md:mb-0 mt-2">
         <img
           src={HeroImage}
           alt="Audit experience illustration"
-          className="w-[70%] sm:w-2/4 mt-2 md:w-3/4 lg:w-full xl:max-w-lg rounded-lg transform transition duration-500 hover:scale-105"
+          className="w-full scale-[0.88] md:scale-75 sm:w-2/4 mt-2 md:w-3/4 lg:w-full xl:max-w-lg lg:scale-90 xl:scale-125 rounded-lg transform transition duration-500 hover:scale-105"
         />
       </div>
 
