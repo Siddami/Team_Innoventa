@@ -2,7 +2,7 @@ import { auth, db } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, query, where, getDocs, collection } from 'firebase/firestore';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
+    <div className="flex flex-col gap-3 items-center justify-center min-h-screen bg-gray-100 p-6">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md transform transition duration-500 hover:scale-105">
         <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
@@ -201,11 +201,18 @@ const Signup = () => {
           )}
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 transform hover:scale-105"
+            className="w-full py-2 px-4 bg-primary text-white font-semibold rounded-md hover:bg-accent focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 transform hover:scale-105"
           >
             Sign Up
           </button>
         </form>
+      </div>
+      {/* Back Button */}
+      <div className="mt-6">
+          <Link to="/" className="flex items-center text-accent hover:text-primary transition">
+              <box-icon name="arrow-back" color="#1D4E89" size="sm"></box-icon>
+              <span className="ml-2 text-lg font-semibold text-primary">Back to Home</span>
+          </Link>
       </div>
     </div>
   );
