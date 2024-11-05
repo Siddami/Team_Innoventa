@@ -1,37 +1,50 @@
 import { TypeAnimation } from "react-type-animation";
-import HeroImage from '../assets/sort.jpg';
 import { Link } from "react-router-dom";
+import BackgroundVideo from '../assets/audit.mp4'; 
+import BackgroundImage from '../assets/sort.jpg'; 
 
 const Hero = () => {
   return (
-    <section className="flex flex-col md:flex-row items-center justify-center h-screen w-full p-0 sm:p-4 bg-gray-900 text-white">
-      {/* Left Side: Image */}
-      <div className="flex-1 flex justify-center md:mb-0 mt-2">
-        <img
-          src={HeroImage}
-          alt="Audit experience illustration"
-          className="w-full scale-[0.88] md:scale-75 sm:w-2/4 mt-2 md:w-3/4 lg:w-full xl:max-w-lg lg:scale-90 xl:scale-125 rounded-lg transform transition duration-500 hover:scale-105"
-        />
-      </div>
+    <section className="relative flex items-center justify-center h-[75vh] w-full bg-primary text-white overflow-hidden">
+      
+      {/* Background Video */}
+      <video
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        src={BackgroundVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster={BackgroundImage}
+      />
 
-      {/* Right Side: Text Content */}
-      <div className="flex-1 flex flex-col justify-center items-start text-left px-4 sm:px-8 lg:px-12">
+      {/* Gradient Overlay */}
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-primary via-transparent to-accent opacity-70"></div>
+
+      {/* Centered Text Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 lg:px-8">
         <TypeAnimation
           sequence={[
-            "Simplifying Your Audit Experience", // Initial text
-            2000, // Display for 2 seconds
-            "With Ease & Security", // New text
-            2000, // Display for another 2 seconds
+            "Simplifying Your Audit Experience",
+            2000,
+            "With Ease & Security",
+            2000,
           ]}
           wrapper="h1"
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
-          repeat={Infinity} // Loop indefinitely
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight animate-slideIn"
+          repeat={Infinity}
         />
 
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 mt-2">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 mt-2 max-w-[80%]">
           Effortlessly upload and manage your documents with our user-friendly platform.
         </p>
-        <Link to="/signup" className="bg-primary hover:bg-accent hover:scale-95 text-white font-semibold py-3 px-6 sm:py-4 sm:px-8 rounded transition duration-200 text-sm sm:text-base md:text-lg">Get Started</Link>
+
+        <Link
+          to="/signup"
+          className="bg-primary hover:bg-accent transform hover:scale-95 text-white font-semibold py-3 px-6 sm:py-4 sm:px-8 rounded transition duration-200 text-sm sm:text-base md:text-lg"
+        >
+          Get Started
+        </Link>
       </div>
     </section>
   );
