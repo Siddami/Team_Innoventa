@@ -25,7 +25,7 @@ const Navbar = ({ isAuthenticated }) => {
   };
 
   return (
-    <nav className="bg-primary p-5 shadow-md">
+    <nav className="fixed top-0 left-0 w-full bg-primary p-5 shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="text-white text-2xl font-bold">
