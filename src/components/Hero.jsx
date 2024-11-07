@@ -31,11 +31,11 @@ const Hero = () => {
             2000,
           ]}
           wrapper="h1"
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight animate-slideIn"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-4 leading-tight animate-slideIn drop-shadow-lg"
           repeat={Infinity}
         />
 
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 mt-2 max-w-[80%]">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 mt-2 max-w-[80%] drop-shadow-lg">
           Effortlessly upload and manage your documents with our user-friendly platform.
         </p>
 
