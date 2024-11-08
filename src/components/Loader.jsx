@@ -16,7 +16,7 @@ const Loader = () => {
   if (!isLoading) return null;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-transparent">
       <div className="relative w-24 h-24">
         <div className="absolute w-full h-full border-4 border-blue-500 rounded-full animate-spin-slow border-t-transparent"></div>
         <div className="absolute w-full h-full border-4 border-purple-500 rounded-full animate-[spin_1.5s_linear_reverse_infinite] border-t-transparent"></div>
