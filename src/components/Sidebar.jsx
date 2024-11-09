@@ -1,55 +1,64 @@
+import SidebarItem from './SidebarItem';
+
 const Sidebar = ({ activeSection, setActiveSection, userType }) => {
-  return (
-    <aside className="w-80 bg-primary text-white h-screen p-4">
-      <h2 className="text-2xl font-bold mb-4">AuditifyX</h2>
-      <ul className="flex flex-col gap-5">
-        <li className="mb-2">
-          <button
-            className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'recentActivity' ? 'font-bold text-textColor bg-secondary' : ''}`}
-            onClick={() => setActiveSection('recentActivity')}
-          >
-            Recent Activity
-          </button>
-        </li>
-
-        <li className="mb-2">
-          <button
-            className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'documentList' ? 'font-bold text-textColor bg-secondary' : ''}`}
-            onClick={() => setActiveSection('documentList')}
-          >
-            Documents List
-          </button>
-        </li>
-
+  const renderSidebarItems = () => {
+    return (
+      <>
+        <SidebarItem
+          label="Recent Activity"
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          section="recentActivity"
+        />
+        <SidebarItem
+          label="Documents List"
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          section="documentList"
+        />
         {userType === 'organization' && (
-          <li className="mb-2">
-            <button
-              className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'uploadDocument' ? 'font-bold text-textColor bg-secondary' : ''}`}
-              onClick={() => setActiveSection('uploadDocument')}
-            >
-              Upload Document
-            </button>
-          </li>
+          <SidebarItem
+            label="Upload Document"
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+            section="uploadDocument"
+          />
         )}
+        <SidebarItem
+          label="Access Document and Comment"
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          section="comments"
+        />
+        <SidebarItem
+          label="Notifications"
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          section="notifications"
+        />
+      </>
+    );
+  };
 
-        <li className="mb-2">
-          <button
-            className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'comments' ? 'font-bold text-textColor bg-secondary' : ''}`}
-            onClick={() => setActiveSection('comments')}
-          >
-            Access Document and Comment
-          </button>
-        </li>
+  return (
+    <aside className="w-80 bg-primary text-white h-screen fixed left-0 top-0 p-4 flex flex-col z-10">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">AuditifyX</h2>
+      </div>
 
-        <li className="mb-2">
-          <button
-            className={`w-full text-left p-4 hover:bg-secondary hover:text-textColor ${activeSection === 'notifications' ? 'font-bold text-textColor bg-secondary' : ''}`}
-            onClick={() => setActiveSection('notifications')}
-          >
-            Notifications
-          </button>
-        </li>
-      </ul>
+      {/* Mobile menu */}
+      <div className="sm:hidden">
+        <ul className="flex flex-col gap-5">
+          {renderSidebarItems()}
+        </ul>
+      </div>
+
+      {/* Desktop menu */}
+      <div className="hidden sm:block">
+        <ul className="flex flex-col gap-5">
+          {renderSidebarItems()}
+        </ul>
+      </div>
     </aside>
   );
 };

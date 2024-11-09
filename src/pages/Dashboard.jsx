@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Sidebar from '../components/Sidebar';
 import RenderContent from '../components/RenderContent';
+import DashboardNav from '../components/DashboardNav';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -28,42 +29,41 @@ const Dashboard = () => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (userId) {
-        try {
-          const userDocRef = doc(db, 'users', userId);
-          const userDocSnap = await getDoc(userDocRef);
+      if (!userId) return;
 
-          if (userDocSnap.exists()) {
-            setUserData(userDocSnap.data());
+      try {
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnap = await getDoc(userDocRef);
 
-            const notificationsRef = collection(db, 'notifications');
-            const notificationsSnapshot = await getDocs(notificationsRef);
-            const notificationsList = notificationsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setNotifications(notificationsList);
+        if (userDocSnap.exists()) {
+          const data = userDocSnap.data();
+          setUserData(data);
 
-            const activityRef = collection(db, 'documents');
-            const activitySnapshot = await getDocs(activityRef);
-            const activityList = activitySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          const notificationsRef = collection(db, 'notifications');
+          const notificationsSnapshot = await getDocs(notificationsRef);
+          const notificationsList = notificationsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          setNotifications(notificationsList);
 
-            if (userDocSnap.data().userType === 'auditor') {
-              const assignedActivities = activityList.filter(doc => doc.assignedTo === userId);
-              setRecentActivity(assignedActivities);
-            } else {
-              const organizationActivities = activityList.filter(doc => doc.uploadedBy === userId);
-              setRecentActivity(organizationActivities);
-            }
+          const activityRef = collection(db, 'documents');
+          const activitySnapshot = await getDocs(activityRef);
+          const activityList = activitySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+          if (data.userType === 'auditor') {
+            const assignedActivities = activityList.filter((doc) => doc.assignedTo === userId);
+            setRecentActivity(assignedActivities);
           } else {
-            console.log('No such document!');
+            const organizationActivities = activityList.filter((doc) => doc.uploadedBy === userId);
+            setRecentActivity(organizationActivities);
           }
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        } finally {
-          setLoading(false);
         }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -98,75 +98,46 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-20 transform transition-transform bg-white shadow-md ${
+        className={`fixed inset-y-0 left-0 transform transition-transform duration-300 bg-primary shadow-lg overflow-y-auto ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:relative lg:translate-x-0 lg:w-64 xl:w-72`}
+        } lg:translate-x-0 w-96 z-10`}
       >
-        <Sidebar
-          activeSection={activeSection}
-          setActiveSection={handleSidebarOptionClick}
-          userType={userData?.userType}
-        />
+        {userData && (
+          <Sidebar
+            activeSection={activeSection}
+            setActiveSection={handleSidebarOptionClick}
+            userType={userData.userType}
+          />
+        )}
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-60 xl:ml-64 flex flex-col">
-        {/* Top Navigation Bar spanning full width */}
-        <div className="w-full flex justify-between items-center p-4 sm:p-6 md:p-8 ">
-          <button
-            onClick={toggleSidebar}
-            className="text-2xl lg:hidden focus:outline-none"
-            aria-expanded={isSidebarOpen}
-          >
-            {isSidebarOpen ? (
-              <i className="bx bx-chevron-left"></i>
-            ) : (
-              <i className="bx bx-menu"></i>
-            )}
-          </button>
-          <h1 className="text-lg sm:text-xl md:text-2xl font-semibold flex-1 text-center lg:text-left">
-            {userData?.name || 'User'}
-          </h1>
-          <div className="flex space-x-4">
-            <button
-              onClick={() => navigate('/')}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Home
-            </button>
-            <button
-              onClick={handleLogout}
-              className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ${
-                isLoggingOut ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-              disabled={isLoggingOut}
-            >
-              {isLoggingOut ? 'Logging Out...' : 'Log Out'}
-            </button>
-          </div>
-        </div>
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarOpen ? 'pl-96' : 'pl-0'
+        } lg:pl-96`} // Adjust padding for sidebar state
+      >
+        {/* Top Navigation */}
+        <DashboardNav
+          toggleSidebar={toggleSidebar}
+          isSidebarOpen={isSidebarOpen}
+          userData={userData}
+          handleLogout={handleLogout}
+          isLoggingOut={isLoggingOut}
+        />
 
-        {/* Content Section */}
-        <div className="p-4 sm:p-6 md:p-8 overflow-auto">
+        <div className="p-4 sm:p-6 md:p-8 mt-20">
           <RenderContent
             activeSection={activeSection}
-            recentActivity={recentActivity}
             notifications={notifications}
-            userType={userData?.userType}
+            recentActivity={recentActivity}
+            userType={userData.userType}
           />
         </div>
       </div>
-
-      {/* Overlay for mobile sidebar */}
-      {isSidebarOpen && window.innerWidth <= 1024 && (
-        <div
-          onClick={toggleSidebar}
-          className="fixed inset-0 bg-black opacity-50 z-10 lg:hidden"
-        ></div>
-      )}
     </div>
   );
 };
