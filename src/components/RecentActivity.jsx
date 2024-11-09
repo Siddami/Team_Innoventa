@@ -35,9 +35,18 @@ const RecentActivity = () => {
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return 'N/A';
-    const date = timestamp.toDate();
+    
+    // Convert timestamp string to a Date object
+    const date = new Date(timestamp);
+    
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return 'Invalid date';
+    }
+    
     return date.toLocaleString();
   };
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

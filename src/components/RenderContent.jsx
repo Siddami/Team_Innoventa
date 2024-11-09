@@ -3,16 +3,17 @@ import UploadDocument from './UploadDocument';
 import Comments from './Comments';
 import Notifications from './Notifications';
 import RecentActivity from './RecentActivity';
-import DocumentList from './DocumentList'; // Assuming DocumentList is also a separate component
-import { db } from '../firebase'; // Import your firebase config
+import DocumentList from './DocumentList';
+import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
 const RenderContent = ({ activeSection, userType, documentID, assignedAuditorID }) => {
-  const [documents, setDocuments] = useState([]); // State to hold document list
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [error, setError] = useState(null); // State to manage errors
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchDocuments = async () => {
+    setLoading(true); // Ensure loading state is set before fetch
     try {
       const documentsRef = collection(db, 'documents');
       const documentsSnapshot = await getDocs(documentsRef);
@@ -35,44 +36,36 @@ const RenderContent = ({ activeSection, userType, documentID, assignedAuditorID 
 
   const handleUploadComplete = () => {
     console.log("Document upload complete. Refreshing document list...");
-    fetchDocuments(); // Refresh document list
+    fetchDocuments();
   };
 
-  switch (activeSection) {
-    case 'recentActivity':
-      return <RecentActivity />;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
-    case 'uploadDocument':
-      if (userType === 'organization') {
-        return <UploadDocument onUploadComplete={handleUploadComplete} assignedAuditorID={assignedAuditorID} />;
-      }
-      return null;
+  const renderContentBasedOnSection = () => {
+    switch (activeSection) {
+      case 'recentActivity':
+        return <RecentActivity />;
+      case 'uploadDocument':
+        return userType === 'organization' ? (
+          <UploadDocument onUploadComplete={handleUploadComplete} assignedAuditorID={assignedAuditorID} />
+        ) : null;
+      case 'documentList':
+        return userType === 'auditor' ? (
+          <DocumentList documents={documents} />
+        ) : null;
+      case 'comments':
+        return userType === 'auditor' ? (
+          <Comments documentID={documentID} assignedAuditorID={assignedAuditorID} />
+        ) : null;
+      case 'notifications':
+        return <Notifications />;
+      default:
+        return null;
+    }
+  };
 
-    case 'documentList':
-      if (userType === 'auditor') {
-        return (
-          <DocumentList 
-            documents={documents} 
-            loading={loading} 
-            error={error} // Pass error to DocumentList
-          />
-        );
-      }
-      return null;
-
-    case 'comments':
-      if (userType === 'auditor') {
-        return <Comments documentID={documentID} assignedAuditorID={assignedAuditorID} />;
-      }
-      return null;
-
-    case 'notifications':
-      return <Notifications />;
-
-    default:
-      return null;
-  }
+  return renderContentBasedOnSection();
 };
 
 export default RenderContent;
-

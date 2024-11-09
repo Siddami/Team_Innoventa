@@ -1,73 +1,113 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { db, auth } from '../firebase';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
-const UploadDocument = ({ onUploadComplete, assignedAuditorID }) => {
+const UploadDocument = ({ onUploadComplete }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [assignedAuditorID, setAssignedAuditorID] = useState("");
+  const [auditors, setAuditors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const storage = getStorage();
+
+  useEffect(() => {
+    const fetchAuditors = async () => {
+      try {
+        const auditorsQuery = query(
+          collection(db, 'users'), 
+          where("userType", "==", "auditor")
+        );
+        const auditorsSnapshot = await getDocs(auditorsQuery);
+        const auditorsList = auditorsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
+        setAuditors(auditorsList);
+      } catch (error) {
+        console.error("Error fetching auditors:", error.message);
+        toast.error("Failed to load auditors.");
+      }
+    };
+    fetchAuditors();
+  }, []);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
 
   const handleUpload = async () => {
-    if (!selectedFile) return alert("Please select a file to upload");
+    if (!selectedFile) return toast.error("Please select a file to upload");
+    if (!assignedAuditorID) return toast.error("Please select an auditor");
 
-    setLoading(true); // Set loading to true during upload
-
+    setLoading(true);
     try {
       const storageRef = ref(storage, `documents/${selectedFile.name}`);
-
-      // Upload the file to Firebase Storage
       await uploadBytes(storageRef, selectedFile);
-
-      // Get the download URL for the uploaded file
       const url = await getDownloadURL(storageRef);
 
-      // Save document metadata to Firestore
+      const userId = auth.currentUser ? auth.currentUser.uid : "anonymous";
+
       await addDoc(collection(db, 'documents'), {
         title: selectedFile.name,
         description: description || "Uploaded document",
         url,
-        userID: "currentUserID", // Replace with actual user ID
-        assignedTo: assignedAuditorID, // Assign the document to a specific auditor
-        uploadedAt: new Date()
+        userId,
+        assignedTo: assignedAuditorID,
+        uploadedAt: new Date().toISOString()
       });
 
-      alert("Document uploaded successfully and assigned!");
+      toast.success("Document uploaded successfully and assigned!");
       setSelectedFile(null);
       setDescription("");
-      onUploadComplete(); // Trigger callback to refresh documents
+      setAssignedAuditorID("");
+      onUploadComplete();
     } catch (error) {
-      console.error("Error uploading document:", error);
-      alert("Failed to upload document. Please try again.");
+      console.error("Error uploading document:", error.message);
+      toast.error(`Failed to upload document. Error: ${error.message}`);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Upload Document</h2>
-      <input 
-        type="file" 
-        onChange={handleFileChange} 
-        className="mb-4 w-full border p-2 rounded"
-      />
-      <input
-        type="text"
-        placeholder="Document description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="mt-2 p-2 border rounded w-full mb-4"
-      />
-      <button 
-        onClick={handleUpload} 
-        className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-        disabled={loading} // Disable button while uploading
+    <div className="bg-customWhite p-8 rounded-lg shadow-lg space-y-6 max-w-lg mx-auto animate-fadeIn">
+      <h2 className="text-3xl font-bold text-primary mb-6">Upload Document</h2>
+      
+      <div className="space-y-4">
+        <input
+          type="file"
+          onChange={handleFileChange}
+          className="w-full border border-customGrayLight p-3 rounded-lg text-customGray focus:border-customPrimary transition"
+        />
+
+        <input
+          type="text"
+          placeholder="Document description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-3 border border-customGrayLight rounded-lg focus:border-customPrimary transition"
+        />
+
+        <select
+          value={assignedAuditorID}
+          onChange={(e) => setAssignedAuditorID(e.target.value)}
+          className="w-full p-3 border border-customGrayLight rounded-lg focus:border-customPrimary transition"
+        >
+          <option value="">Select Auditor</option>
+          {auditors.map((auditor) => (
+            <option key={auditor.id} value={auditor.id}>
+              {auditor.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={handleUpload}
+        className={`w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primaryDark transition duration-300 ease-in-out transform hover:scale-105 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={loading}
       >
         {loading ? 'Uploading...' : 'Upload'}
       </button>
